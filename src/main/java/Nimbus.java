@@ -1,7 +1,6 @@
-import com.nimbusds.jose.JWSAlgorithm;
-import com.nimbusds.jose.JWSHeader;
-import com.nimbusds.jose.JWSSigner;
+import com.nimbusds.jose.*;
 import com.nimbusds.jose.crypto.RSASSASigner;
+import com.nimbusds.jose.crypto.RSASSAVerifier;
 import com.nimbusds.jose.jwk.KeyUse;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.util.Base64URL;
@@ -13,6 +12,7 @@ import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
+import java.text.ParseException;
 import java.util.Base64;
 
 public class Nimbus {
@@ -74,5 +74,16 @@ public class Nimbus {
         System.out.println("======================\n\n");
 
         return new RSAPair(jwk, signedJWTString);
+    }
+
+    public static void verify(RSAPair rsaPair) throws JOSEException, ParseException {
+
+        JWSVerifier verifier = new RSASSAVerifier((RSAPublicKey) rsaPair.jwk.toPublicKey());
+        SignedJWT signedJWT = SignedJWT.parse(rsaPair.jws);
+
+        System.out.println("\n\nNimbus Verify");
+        System.out.println("======================");
+        System.out.println(signedJWT.verify(verifier));
+        System.out.println("======================\n\n");
     }
 }

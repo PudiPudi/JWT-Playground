@@ -38,6 +38,8 @@ public class Main {
             RSAKey rsaKey = RSAKey.parse(jwk.toJSONObject());
 
             System.out.println(rsaKey.toPublicKey().toString());
+            rsaPair.jwk = rsaKey;
+            Nimbus.verify(rsaPair);
         }
     }
 }
